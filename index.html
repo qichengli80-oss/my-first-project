@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicco | Mine (Dark Mode Ready)</title>
+<style>
+  /* =========================================
+     CSS 变量设定 (适配深/浅色模式)
+     ========================================= */
+  :root {
+    color-scheme: light; /* 告诉浏览器原生滚动条/输入框用浅色UI */
+    --bg-color: #f5f5f7;
+    /* 浅色背景图 */
+    --bg-img: url('https://images.unsplash.com/photo-1707137397711-b4d4b3135df8?q=80&w=2000&auto=format&fit=crop');
+
+    --text-main: #1d1d1f;
+    --text-sec: #515154;
+    --text-nav: rgba(29, 29, 31, 0.7);
+    --text-nav-hover: #000;
+
+    --nav-bg: rgba(255, 255, 255, 0.01);
+    --nav-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    --nav-inner-border: inset 0 0 0 0.5px rgba(255, 255, 255, 0.6);
+    --nav-inner-glow: inset 0 8px 12px rgba(255, 255, 255, 0.15);
+
+    --search-bg: rgba(255, 255, 255, 0.5);
+    --search-bg-focus: rgba(255, 255, 255, 0.9);
+    --search-border: rgba(0, 0, 0, 0.15);
+    --search-icon: rgba(0, 0, 0, 0.5);
+
+    --card-bg: rgba(255, 255, 255, 0.45);
+    --card-border: rgba(255, 255, 255, 0.6);
+    --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+    --card-shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.08);
+    --card-inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+    --heading-gradient: linear-gradient(135deg, #000 0%, #444 100%);
+    --btn-bg: rgba(255, 255, 255, 0.3);
+    --btn-bg-hover: rgba(255, 255, 255, 0.7);
+    --btn-border: rgba(255, 255, 255, 0.5);
+    --btn-icon-bg: #1d1d1f;
+    --btn-icon-color: #fff;
+
+    --buy-strip-bg: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(245,245,247,0.8) 100%);
+
+    --drop-bg: radial-gradient(circle at 30% 35%, rgba(255,255,255,0.10) 0%, rgba(220,235,255,0.15) 80%);
+    --drop-shadow: inset 0 1px 3px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.05), 0 8px 18px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.5);
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    /* 极致纯净的纯黑底色 */
+    --bg-color: #000000;
+
+    /* 移除五彩斑斓的图片。
+       这里加入了一个非常微弱的顶部深灰渐变（类似一束极其柔和的顶光），
+       既保证了纯净黑色的阅读体验，又不会让页面显得死黑、没有空间感。*/
+    --bg-img: radial-gradient(ellipse at 50% 0%, #1c1c1e 0%, #000000 80%);
+
+    --text-main: #f5f5f7;
+    --text-sec: #a1a1a6;
+    --text-nav: rgba(255, 255, 255, 0.7);
+    --text-nav-hover: #fff;
+
+    --nav-bg: rgba(0, 0, 0, 0.2);
+    --nav-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    --nav-inner-border: inset 0 0 0 0.5px rgba(255, 255, 255, 0.15);
+    --nav-inner-glow: inset 0 8px 12px rgba(255, 255, 255, 0.05);
+
+    --search-bg: rgba(0, 0, 0, 0.3);
+    --search-bg-focus: rgba(40, 40, 40, 0.9);
+    --search-border: rgba(255, 255, 255, 0.15);
+    --search-icon: rgba(255, 255, 255, 0.6);
+
+    /* 稍微提亮了一点卡片的底色，在纯黑背景下对比更清晰 */
+    --card-bg: rgba(30, 30, 30, 0.6);
+    --card-border: rgba(255, 255, 255, 0.15);
+    --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    --card-shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.6);
+    --card-inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    --heading-gradient: linear-gradient(135deg, #fff 0%, #86868b 100%);
+    --btn-bg: rgba(255, 255, 255, 0.1);
+    --btn-bg-hover: rgba(255, 255, 255, 0.2);
+    --btn-border: rgba(255, 255, 255, 0.2);
+    --btn-icon-bg: #fff;
+    --btn-icon-color: #1d1d1f;
+
+    --buy-strip-bg: linear-gradient(180deg, rgba(30,30,30,0.6) 0%, rgba(0,0,0,0.8) 100%);
+
+    --drop-bg: radial-gradient(circle at 30% 35%, rgba(255,255,255,0.05) 0%, rgba(100,120,255,0.1) 80%);
+    --drop-shadow: inset 0 1px 3px rgba(255,255,255,0.15), inset 0 -1px 2px rgba(0,0,0,0.3), 0 8px 18px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.15);
+  }
+
+  /* =========================================
+     基础全局样式与背景
+     ========================================= */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+    padding-top: 48px;
+    background-image: var(--bg-img);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  /* =========================================
+     导航栏
+     ========================================= */
+  .apple-nav {
+    position: fixed;
+    top: 24px; left: 50%; transform: translateX(-50%);
+    width: 95%; max-width: 1100px; height: 60px;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000; overflow: visible;
+    transition: height 0.45s cubic-bezier(0.34, 1.2, 0.64, 1), border-radius 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+    border-radius: 100px;
+  }
+  .apple-nav.nav-expanded { height: 90px; border-radius: 40px; }
+
+  .apple-nav::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: inherit;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    box-shadow:
+        var(--nav-shadow),
+        var(--nav-inner-border),
+        inset 0 0 20px rgba(255, 255, 255, 0.01),
+        var(--nav-inner-glow);
+    transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) 0.1s;
+    z-index: -1; pointer-events: auto;
+  }
+  .apple-nav.nav-expanded::before { bottom: -220px; transition: all 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) 0s; }
+
+  .nav-container {
+    width: 100%; height: 100%; position: relative; display: flex;
+    justify-content: space-between; align-items: center;
+    padding: 0 30px; z-index: 5; transition: padding-top 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .apple-nav.nav-expanded .nav-container { padding-top: 18px; }
+
+  .nav-item {
+    text-decoration: none; color: var(--text-nav); font-size: 13.5px;
+    font-weight: 500; letter-spacing: -0.01em; padding: 8px 14px;
+    position: relative; z-index: 10; transition: color 0.3s ease;
+    display: flex; align-items: center;
+  }
+  .nav-item:hover { color: var(--text-nav-hover); }
+  .nav-logo { font-size: 22px; font-weight: 700; color: var(--text-main); }
+
+  /* 深浅色切换按钮 */
+  .theme-toggle-btn { cursor: pointer; }
+  .theme-toggle-btn svg { width: 15px; height: 15px; stroke: currentColor; transition: transform 0.3s ease; }
+  /* 默认显示月亮（浅色模式代表点击变暗） */
+  .icon-sun { display: none; }
+  .icon-moon { display: block; }
+  /* 深色模式下：显示太阳，隐藏月亮 */
+  [data-theme="dark"] .icon-sun { display: block; }
+  [data-theme="dark"] .icon-moon { display: none; }
+
+  /* 搜索框 */
+  .apple-search-form { position: relative; display: flex; align-items: center; }
+  .magnify-icon { position: absolute; left: 10px; width: 14px; height: 14px; fill: var(--search-icon); pointer-events: auto; z-index: 2; transition: fill 0.3s ease; }
+  #sp-searchtext {
+    width: 130px; height: 28px; border-radius: 14px;
+    border: 1px solid var(--search-border); background: var(--search-bg);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 12px 0 30px; font-family: inherit; font-size: 12px;
+    color: var(--text-main); outline: none; transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+  }
+  #sp-searchtext:focus {
+    width: 180px; background: var(--search-bg-focus); border-color: var(--search-border);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(0, 125, 250, 0.2);
+  }
+  #sp-searchtext:focus + .magnify-icon { fill: var(--text-main); }
+
+  /* =========================================
+     水滴高光
+     ========================================= */
+  .water-drop {
+    position: absolute; border-radius: 30px; opacity: 0; pointer-events: none;
+    z-index: 1; overflow: hidden; backdrop-filter: blur(2px) brightness(1.2); -webkit-backdrop-filter: blur(2px) brightness(1.2);
+    background: var(--drop-bg); box-shadow: var(--drop-shadow);
+    transition: top 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), left 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), width 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), height 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), border-radius 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+    will-change: transform, left, top, width, height;
+  }
+  .water-drop .highlight-glow { position: absolute; width: 80px; height: 80px; background: radial-gradient(circle, rgba(255,255,210,0.25) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; filter: blur(12px); pointer-events: none; transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.2s ease; }
+  .water-drop .glint-1, .water-drop .glint-2 { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; background: radial-gradient(circle, rgba(255,255,245,0.2) 0%, rgba(255,255,255,0) 80%); transition: opacity 0.15s ease; }
+  .water-drop .glint-1 { width: 40px; height: 40px; filter: blur(8px); }
+  .water-drop .glint-2 { width: 30px; height: 30px; filter: blur(6px); }
+  .water-drop::before, .water-drop::after { content: ''; position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; background: radial-gradient(circle, rgba(255,255,245,0.15) 0%, rgba(255,255,255,0) 80%); transition: opacity 0.2s ease; }
+  .water-drop::before { width: 30px; height: 30px; top: 15%; left: 20%; filter: blur(5px); }
+  .water-drop::after { width: 20px; height: 20px; bottom: 15%; right: 18%; filter: blur(4px); }
+  .water-drop.drop-active::before { opacity: 0.3; } .water-drop.drop-active::after { opacity: 0.2; }
+
+  /* =========================================
+     子菜单
+     ========================================= */
+  .nav-dropdown { position: relative; display: flex; align-items: center; height: 100%; z-index: 10; }
+  .nav-submenu-panel {
+    position: absolute; top: calc(100% - 2px); left: 50%; padding: 20px; z-index: 10;
+    pointer-events: none; white-space: nowrap; opacity: 0; visibility: hidden; filter: blur(8px);
+    transform: translateX(-50%) scale(0.95) translateY(-15px); transform-origin: center top;
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s ease, visibility 0.3s;
+  }
+  .nav-submenu-panel.active { opacity: 1; visibility: visible; pointer-events: auto; filter: blur(0px); transform: translateX(-50%) scale(1) translateY(0); transition: opacity 0.35s ease 0.12s, transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) 0.08s, filter 0.35s ease 0.12s, visibility 0s 0s; }
+  .submenu-group { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 8px 0 16px 0; }
+  .submenu-item { text-decoration: none; color: var(--text-main); font-size: 14px; font-weight: 500; padding: 6px 12px; transition: color 0.15s ease; }
+  .submenu-item:hover { color: #0071e3; }
+
+  .mobile-menu-btn { display: none; }
+  .mobile-menu-btn svg { width: 18px; height: 18px; color: var(--text-nav); transition: color 0.3s ease; }
+  .mobile-menu-btn:hover svg { color: var(--text-nav-hover); }
+
+  .mobile-menu-btn line {
+    transform-origin: center;
+    transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.45s ease;
+  }
+
+  /* 移动端菜单面板基础样式 */
+  .mobile-menu-panel {
+    display: none;
+  }
+
+  @media (max-width: 850px) {
+    .desktop-item, .nav-dropdown, .nav-search { display: none !important; }
+    .mobile-menu-btn { display: flex !important; align-items: center; margin-left: auto; }
+    .water-drop { display: none !important; }
+
+    /* 按照Apple官网手机端展开时的全屏样式 */
+    .apple-nav.mobile-expanded {
+      top: 0;
+      width: 100%;
+      max-width: 100%;
+      height: 100vh;
+      border-radius: 0;
+      align-items: flex-start; /* 将子元素置于顶部 */
+      transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .apple-nav.mobile-expanded::before {
+      background: var(--bg-color);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    /* 当展开时，保持nav-container的高度和内边距与原来类似，但是修正top */
+    .apple-nav.mobile-expanded .nav-container {
+      height: 60px; /* 固定高度，避免拉伸到100vh */
+      margin-top: 24px; /* 补偿因为top变为0而失去的顶部间距 */
+      align-items: center; /* 保持logo和按钮在这一行居中对齐 */
+    }
+
+    .apple-nav.mobile-expanded .mobile-menu-btn .line-top { transform: translateY(3px) rotate(45deg); }
+    .apple-nav.mobile-expanded .mobile-menu-btn .line-bottom { transform: translateY(-3px) rotate(-45deg); }
+
+    .mobile-menu-panel {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 84px; /* margin-top(24) + height(60) */
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 84px);
+      padding: 20px 40px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), visibility 0.3s;
+      z-index: 10;
+      pointer-events: none;
+      box-sizing: border-box;
+      overflow-y: auto;
+      background: var(--bg-color); /* Ensure full solid background */
+    }
+
+    .apple-nav.mobile-expanded .mobile-menu-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      transition: opacity 0.4s ease 0.2s, transform 0.5s cubic-bezier(0.32, 0.72, 0, 1) 0.1s;
+      pointer-events: auto;
+    }
+
+    .mobile-menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .mobile-nav-item {
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 28px; /* Apple官网手机端字体较大 */
+      font-weight: 600;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+      transition: color 0.3s ease;
+    }
+
+    .mobile-nav-item:last-child {
+      border-bottom: none;
+    }
+
+
+    .mobile-nav-item:hover {
+      color: #0071e3;
+    }
+
+    .mobile-menu-theme {
+      border-top: 1px solid var(--search-border);
+      padding-top: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* 独立给移动端用的深浅色图标显隐 */
+    .icon-sun-mobile { display: none; width: 24px; height: 24px; stroke: currentColor; }
+    .icon-moon-mobile { display: block; width: 24px; height: 24px; stroke: currentColor; }
+    [data-theme="dark"] .icon-sun-mobile { display: block; }
+    [data-theme="dark"] .icon-moon-mobile { display: none; }
+  }
+
+  /* =========================================
+     产品页布局
+     ========================================= */
+  .product-main { max-width: 1100px; margin: 100px auto 60px; padding: 0 20px; display: flex; flex-direction: column; gap: 32px; }
+  .glass-card { background: var(--card-bg); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--card-border); border-radius: 32px; box-shadow: var(--card-shadow), var(--card-inner-light); overflow: hidden; transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1), box-shadow 0.4s ease, background 0.4s ease; text-decoration: none; color: var(--text-main); display: block; }
+  .glass-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: var(--card-shadow-hover), var(--card-inner-light); }
+
+  .hero-section { text-align: center; padding: 60px 40px 0; min-height: 500px; display: flex; flex-direction: column; align-items: center; }
+  .hero-section h1 { font-size: 56px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; background: var(--heading-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; transition: background 0.4s ease; }
+  .hero-section p { font-size: 24px; font-weight: 500; color: var(--text-sec); margin-bottom: 40px; }
+  .hero-image { width: 100%; max-width: 800px; margin-top: auto; border-radius: 20px 20px 0 0; }
+
+  .action-row { display: flex; justify-content: center; gap: 20px; margin: -10px 0 10px; }
+  .action-btn { background: var(--btn-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--btn-border); padding: 12px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
+  .action-btn:hover { background: var(--btn-bg-hover); }
+  .play-icon { width: 16px; height: 16px; background: var(--btn-icon-bg); color: var(--btn-icon-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 8px; transition: all 0.3s ease;}
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .feature-card { padding: 40px 30px; display: flex; flex-direction: column; text-align: center; }
+  .feature-card img { height: 80px; width: auto; margin: 0 auto 20px; border-radius: 20px; }
+  .feature-card h3 { font-size: 24px; margin-bottom: 10px; }
+  .feature-card p { font-size: 15px; color: var(--text-sec); line-height: 1.5; margin-bottom: 20px; flex-grow: 1;}
+  .learn-more { color: #0071e3; font-weight: 500; }
+  .learn-more::after { content: ' ›'; font-size: 18px; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .eco-card { padding: 50px 40px; display: flex; align-items: center; gap: 30px; }
+  .eco-text { flex: 1; }
+  .eco-text h3 { font-size: 28px; margin-bottom: 12px; }
+  .eco-text p { font-size: 16px; color: var(--text-sec); line-height: 1.5; margin-bottom: 15px;}
+  .eco-img { width: 140px; border-radius: 20px; }
+
+  .buy-strip { display: flex; justify-content: space-between; align-items: center; padding: 40px 50px; background: var(--buy-strip-bg); }
+  .buy-left h2 { font-size: 32px; margin-bottom: 8px; }
+  .buy-left p { font-size: 18px; color: var(--text-sec); }
+  .buy-right { display: flex; gap: 20px; }
+  .btn-primary { background: #0071e3; color: white; padding: 12px 30px; border-radius: 100px; font-weight: 600; text-decoration: none; transition: background 0.3s ease; }
+  .btn-primary:hover { background: #0077ed; }
+
+  @media (max-width: 900px) {
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .eco-card { flex-direction: column-reverse; text-align: center; }
+    .buy-strip { flex-direction: column; text-align: center; gap: 30px; }
+    .hero-section h1 { font-size: 40px; }
+  }
+    #mobileThemeBtn {
+      font-size: 24px;
+      margin-top: 20px;
+      margin-left: 5px;
+      color: var(--text-main);
+    }
+  .apple-nav.mobile-expanded::before {
+    background: var(--bg-main);
+  }
+</style>
+</head>
+<body>
+
+<nav class="apple-nav" id="globalNav">
+  <div class="nav-container">
+    <div class="water-drop" id="magicDrop">
+      <div class="highlight-glow"></div>
+      <div class="glint-1"></div>
+      <div class="glint-2"></div>
+    </div>
+
+    <a href="#" class="nav-item nav-logo">Nicco.</a>
+
+    <div class="nav-dropdown" data-menu="articles">
+      <a href="#" class="nav-item desktop-item dropdown-toggle">Articles</a>
+      <div class="nav-submenu-panel" id="submenu-panel-articles">
+        <div class="submenu-group">
+          <a href="#" class="submenu-item">News</a>
+          <a href="#" class="submenu-item">Reviews</a>
+          <a href="#" class="submenu-item">Tutorials</a>
+          <a href="#" class="submenu-item">Opinion</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-dropdown" data-menu="galleries">
+      <a href="#" class="nav-item desktop-item dropdown-toggle">Galleries</a>
+      <div class="nav-submenu-panel" id="submenu-panel-galleries">
+        <div class="submenu-group">
+          <a href="#" class="submenu-item">Photos</a>
+          <a href="#" class="submenu-item">Videos</a>
+          <a href="#" class="submenu-item">Wallpapers</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-dropdown" data-menu="shop">
+      <a href="#" class="nav-item desktop-item dropdown-toggle">Shop</a>
+      <div class="nav-submenu-panel" id="submenu-panel-shop">
+        <div class="submenu-group">
+          <a href="#" class="submenu-item">All Products</a>
+          <a href="#" class="submenu-item">Accessories</a>
+          <a href="#" class="submenu-item">Gift Cards</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-dropdown" data-menu="support">
+      <a href="#" class="nav-item desktop-item dropdown-toggle">Support</a>
+      <div class="nav-submenu-panel" id="submenu-panel-support">
+        <div class="submenu-group">
+          <a href="#" class="submenu-item">Help Center</a>
+          <a href="#" class="submenu-item">Contact Us</a>
+          <a href="#" class="submenu-item">Warranty</a>
+          <a href="#" class="submenu-item">Downloads</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-item nav-search">
+      <form action="/search/" method="post" class="apple-search-form" id="g-search">
+        <svg class="magnify-icon" viewBox="0 0 15 15"><path d="M14.78 13.72l-3.67-3.67A5.96 5.96 0 1 0 10.05 11l3.67 3.67a.75.75 0 1 0 1.06-1.06zM1.5 6.5a5 5 0 1 1 5 5 5 5 0 0 1-5-5z"></path></svg>
+        <input type="text" name="q" id="sp-searchtext" accesskey="s" />
+      </form>
+    </div>
+
+    <!-- 💡 新增的深/浅色模式切换按钮 -->
+    <a href="#" class="nav-item theme-toggle-btn desktop-item" id="themeToggle" aria-label="Toggle Theme">
+      <!-- 月亮图标 (代表点击切换到深色，或当前在浅色) -->
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <!-- 太阳图标 (代表点击切换到浅色，或当前在深色) -->
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </a>
+
+    <a href="#" class="nav-item mobile-menu-btn" id="mobileMenuBtn">
+      <svg viewBox="0 0 18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <line class="line-top" x1="2" y1="6" x2="16" y2="6"></line>
+        <line class="line-bottom" x1="2" y1="12" x2="16" y2="12"></line>
+      </svg>
+    </a>
+  </div>
+
+  <div class="mobile-menu-panel" id="mobileMenuPanel">
+    <div class="mobile-menu-links">
+      <a href="#" class="mobile-nav-item">Articles</a>
+      <a href="#" class="mobile-nav-item">Galleries</a>
+      <a href="#" class="mobile-nav-item">Shop</a>
+      <a href="#" class="mobile-nav-item">Support</a>
+    </div>
+    <div class="mobile-menu-theme">
+      <a href="#" class="theme-toggle-btn" id="themeToggleMobile" aria-label="Toggle Theme">
+        <!-- 手机端独立的图标以便控制 -->
+        <svg class="icon-moon-mobile" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-sun-mobile" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main class="product-main">
+  <section class="glass-card hero-section">
+    <h1>MINE</h1>
+    <p>Think Different .......</p>
+    <img src="homepage.jpg" alt="产品主图" class="hero-image">
+  </section>
+  <section class="action-row">
+    <a href="#" class="action-btn"><span class="play-icon">▶</span> Watch the film</a>
+    <a href="#" class="action-btn"><span class="play-icon">▶</span> Tech specs</a>
+  </section>
+  <section class="grid-3">
+    <a href="#" class="glass-card feature-card">
+      <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200&h=200&fit=crop&auto=format" alt="BMS">
+      <h3>1.</h3>
+      <p>Built-in smart battery management system. Monitors real-time voltage and temperature to ensure ultimate safety.</p>
+      <span class="learn-more">Learn more</span>
+    </a>
+    <a href="#" class="glass-card feature-card">
+      <img src="https://images.unsplash.com/photo-1617783920365-c700201daf9b?w=200&h=200&fit=crop&auto=format" alt="Capacity">
+      <h3>2.</h3>
+      <p>Up to 2x more power density. Perfect for off-grid living and emergency backup without the extra bulk.</p>
+      <span class="learn-more">Learn more</span>
+    </a>
+    <a href="#" class="glass-card feature-card">
+      <img src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=200&h=200&fit=crop&auto=format" alt="Charging">
+      <h3>3.</h3>
+      <p>All-new charging architecture. Goes from 0 to 80% in just under an hour. Ready when you are.</p>
+      <span class="learn-more">Learn more</span>
+    </a>
+  </section>
+  <section class="grid-2">
+    <a href="#" class="glass-card eco-card">
+      <div class="eco-text">
+        <h3>4.</h3>
+        <p>Control your power station remotely. Monitor input/output wattage and battery health right from your iPhone.</p>
+        <span class="learn-more">Learn more</span>
+      </div>
+      <img src="homepage2.jpg" alt="App" class="eco-img">
+    </a>
+    <a href="#" class="glass-card eco-card">
+      <div class="eco-text">
+        <h3>5.</h3>
+        <p>Seamlessly integrates with our portable solar panels. Clean, endless energy wherever the sun shines.</p>
+        <span class="learn-more">Learn more</span>
+      </div>
+      <img src="homepage3.jpg" alt="Solar" class="eco-img">
+    </a>
+  </section>
+  <section class="glass-card buy-strip">
+    <div class="buy-left">
+      <h2>产品名称</h2>
+      <p>Available worldwide. Starting at 价格.</p>
+    </div>
+    <div class="buy-right">
+      <a href="#" class="action-btn">Contact Sales</a>
+      <a href="#" class="btn-primary">Buy Now</a>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ==========================================
+  // 主题切换逻辑 (兼容Edge, Chrome, Safari)
+  // ==========================================
+  (function() {
+    const htmlEl = document.documentElement;
+    const themeBtn = document.getElementById('themeToggle');
+    const themeBtnMobile = document.getElementById('themeToggleMobile');
+
+    // 1. 读取保存的首选项，或者检查系统级颜色偏好
+    const savedTheme = localStorage.getItem('apple_theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      htmlEl.setAttribute('data-theme', 'dark');
+    }
+
+    function toggleTheme(e) {
+      e.preventDefault();
+      const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        htmlEl.removeAttribute('data-theme');
+        localStorage.setItem('apple_theme', 'light');
+      } else {
+        htmlEl.setAttribute('data-theme', 'dark');
+        localStorage.setItem('apple_theme', 'dark');
+      }
+    }
+
+    // 2. 点击按钮切换深浅色
+    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+    if (themeBtnMobile) themeBtnMobile.addEventListener('click', toggleTheme);
+
+    // 3. 监听系统级别的深浅色切换 (若用户没手动点过按钮，则跟随系统)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('apple_theme')) {
+        if (e.matches) {
+          htmlEl.setAttribute('data-theme', 'dark');
+        } else {
+          htmlEl.removeAttribute('data-theme');
+        }
+      }
+    });
+  })();
+
+  // ==========================================
+  // 移动端菜单展开/收起逻辑
+  // ==========================================
+  (function() {
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const globalNav = document.getElementById('globalNav');
+
+    if (mobileBtn && globalNav) {
+      mobileBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        globalNav.classList.toggle('mobile-expanded');
+      });
+    }
+  })();
+
+  // ==========================================
+  // 水滴雷达与导航交互逻辑
+  // ==========================================
+  (function() {
+    const drop = document.getElementById('magicDrop');
+    const navItems = document.querySelectorAll('.nav-item, .submenu-item, #sp-searchtext');
+    const nav = document.querySelector('.apple-nav');
+    const navContainer = document.querySelector('.nav-container');
+    const searchInput = document.getElementById('sp-searchtext');
+    if (!drop || !nav) return;
+
+    let activeItem = null, currentTargetItem = null, trackingRafId = null;
+    let hideMenuTimer = null, currentActiveMenu = null;
+    let lastMouseX = 0, lastMouseY = 0;
+
+    let currentOffsetX = 0, currentOffsetY = 0, currentScaleX = 1, currentScaleY = 1;
+    const glow = drop.querySelector('.highlight-glow');
+    const glint1 = drop.querySelector('.glint-1'), glint2 = drop.querySelector('.glint-2');
+
+    function getRelativeOffset(element) {
+      const containerRect = navContainer.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      return { left: elementRect.left - containerRect.left, top: elementRect.top - containerRect.top, width: elementRect.width, height: elementRect.height };
+    }
+
+    function updateActiveMenuByMouseX(clientX) {
+      let nearestMenuId = null, minDx = Infinity, isSubmenuArea = false;
+      const columns = document.querySelectorAll('.nav-dropdown, .nav-search, .nav-logo, .theme-toggle-btn');
+      columns.forEach(col => {
+        const rect = col.getBoundingClientRect();
+        const dx = Math.abs(clientX - (rect.left + rect.right) / 2);
+        if (dx < minDx) {
+          minDx = dx;
+          if (col.classList.contains('nav-dropdown')) { nearestMenuId = col.getAttribute('data-menu'); isSubmenuArea = true; }
+          else { nearestMenuId = null; isSubmenuArea = false; }
+        }
+      });
+      if (isSubmenuArea && nearestMenuId) showSubmenu(nearestMenuId); else hideAllSubmenus();
+    }
+
+    function findNearestMenuItem(clientX, clientY) {
+      let nearest = null, minDistance = Infinity;
+      navItems.forEach(item => {
+        const panel = item.closest('.nav-submenu-panel');
+        if (panel && !panel.classList.contains('active')) return;
+        const rect = item.getBoundingClientRect();
+        const dist = Math.hypot(Math.abs(clientX - (rect.left + rect.right) / 2), Math.abs(clientY - (rect.top + rect.bottom) / 2));
+        if (dist < minDistance) { minDistance = dist; nearest = item; }
+      });
+      return nearest;
+    }
+
+    function updateWaterDropPosition(targetItem) {
+      if (!targetItem) return;
+      const offset = getRelativeOffset(targetItem);
+      drop.style.width = offset.width + 'px'; drop.style.height = offset.height + 'px';
+      drop.style.left = offset.left + 'px'; drop.style.top = offset.top + 'px';
+      drop.style.borderRadius = (targetItem.classList.contains('nav-search') || targetItem.id === 'sp-searchtext') ? offset.height * 0.5 + 'px' : Math.min(offset.height * 0.6, offset.width * 0.3) + 'px';
+    }
+
+    function trackTargetLoop() {
+      if (currentTargetItem && drop.style.opacity !== '0') {
+        updateWaterDropPosition(currentTargetItem);
+        let targetX = 0, targetY = 0;
+        if (activeItem && !drop.classList.contains('pressed')) {
+            const rect = activeItem.getBoundingClientRect();
+            const x = Math.min(Math.max((lastMouseX - rect.left) / rect.width, 0), 1);
+            const y = Math.min(Math.max((lastMouseY - rect.top) / rect.height, 0), 1);
+            targetX = (x - 0.5) * 2 * Math.min(activeItem.offsetWidth * 0.15, 10);
+            targetY = (y - 0.5) * 2 * Math.min(activeItem.offsetHeight * 0.2, 8);
+        }
+        currentOffsetX += (targetX - currentOffsetX) * 0.15; currentOffsetY += (targetY - currentOffsetY) * 0.15;
+        let targetScaleX = drop.classList.contains('pressed') ? 0.88 : 1;
+        let targetScaleY = drop.classList.contains('pressed') ? 0.72 : 1;
+        currentScaleX += (targetScaleX - currentScaleX) * 0.3; currentScaleY += (targetScaleY - currentScaleY) * 0.3;
+        drop.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${currentScaleX}, ${currentScaleY})`;
+        trackingRafId = requestAnimationFrame(trackTargetLoop);
+      } else trackingRafId = null;
+    }
+
+    function updateHighlights(clientX, clientY, targetRect) {
+      if (!activeItem || drop.style.opacity !== '1') return;
+      const x = Math.min(Math.max((clientX - targetRect.left) / targetRect.width, 0), 1);
+      const y = Math.min(Math.max((clientY - targetRect.top) / targetRect.height, 0), 1);
+      if (glow) { glow.style.left = `${x * 100}%`; glow.style.top = `${y * 100}%`; glow.style.opacity = '0.5'; clearTimeout(window.glowTimeout); window.glowTimeout = setTimeout(() => glow.style.opacity = '0.15', 150); }
+      if (glint1) { glint1.style.left = `${Math.min(Math.max(x + Math.sin(Date.now() * 0.005) * 0.1, 0.05), 0.95) * 100}%`; glint1.style.top = `${Math.min(Math.max(y + Math.cos(Date.now() * 0.007) * 0.1, 0.05), 0.95) * 100}%`; glint1.style.opacity = '0.35'; clearTimeout(window.glint1Timeout); window.glint1Timeout = setTimeout(() => glint1.style.opacity = '0.1', 120); }
+      if (glint2) { glint2.style.left = `${Math.min(Math.max(x + Math.sin(Date.now() * 0.008 + 2) * 0.15, 0), 1) * 100}%`; glint2.style.top = `${Math.min(Math.max(y + Math.cos(Date.now() * 0.006 + 1) * 0.15, 0), 1) * 100}%`; glint2.style.opacity = '0.25'; clearTimeout(window.glint2Timeout); window.glint2Timeout = setTimeout(() => glint2.style.opacity = '0.08', 130); }
+    }
+
+    function showSubmenu(menuId) {
+      if (currentActiveMenu === menuId) return;
+      if (currentActiveMenu) document.getElementById(`submenu-panel-${currentActiveMenu}`)?.classList.remove('active');
+      document.getElementById(`submenu-panel-${menuId}`)?.classList.add('active');
+      currentActiveMenu = menuId; nav.classList.add('nav-expanded');
+    }
+
+    function hideAllSubmenus() {
+      if (currentActiveMenu) { document.getElementById(`submenu-panel-${currentActiveMenu}`)?.classList.remove('active'); currentActiveMenu = null; }
+      nav.classList.remove('nav-expanded');
+    }
+
+    nav.addEventListener('mousemove', e => {
+      lastMouseX = e.clientX; lastMouseY = e.clientY;
+      if (window.isSearchFocused) return;
+      if (!nav.contains(e.target)) {
+        drop.style.opacity = '0'; drop.classList.remove('drop-active'); activeItem = currentTargetItem = null;
+        clearTimeout(hideMenuTimer); hideMenuTimer = setTimeout(hideAllSubmenus, 200); return;
+      }
+      clearTimeout(hideMenuTimer);
+      if (drop.style.opacity !== '1') { drop.style.opacity = '1'; drop.classList.add('drop-active'); }
+      updateActiveMenuByMouseX(e.clientX);
+      const nearest = findNearestMenuItem(e.clientX, e.clientY);
+      if (!nearest) return;
+      if (currentTargetItem !== nearest) { currentTargetItem = nearest; if (!trackingRafId) trackTargetLoop(); }
+      activeItem = nearest; updateHighlights(e.clientX, e.clientY, nearest.getBoundingClientRect());
+    });
+
+    nav.addEventListener('mouseleave', () => {
+      if (window.isSearchFocused) return;
+      drop.style.opacity = '0'; drop.classList.remove('drop-active', 'pressed');
+      currentOffsetX = 0; currentOffsetY = 0; currentScaleX = 1; currentScaleY = 1;
+      drop.style.transform = `translate(0px, 0px) scale(1, 1)`;
+      activeItem = currentTargetItem = null;
+      clearTimeout(hideMenuTimer); hideMenuTimer = setTimeout(hideAllSubmenus, 200);
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('focus', () => {
+        window.isSearchFocused = true; drop.style.opacity = '1'; drop.classList.add('drop-active');
+        activeItem = currentTargetItem = searchInput; hideAllSubmenus(); if (!trackingRafId) trackTargetLoop();
+      });
+      searchInput.addEventListener('blur', () => {
+        window.isSearchFocused = false;
+        if (nav.matches(':hover')) nav.dispatchEvent(new MouseEvent('mousemove', { clientX: lastMouseX, clientY: lastMouseY, bubbles: true, cancelable: true, view: window }));
+        else { drop.style.opacity = '0'; drop.classList.remove('drop-active', 'pressed'); currentOffsetX = currentOffsetY = 0; currentScaleX = currentScaleY = 1; drop.style.transform = `translate(0px, 0px) scale(1, 1)`; activeItem = currentTargetItem = null; }
+      });
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener('mousedown', () => {
+        if (activeItem !== item || item.classList.contains('nav-search') || item.id === 'sp-searchtext') return;
+        drop.classList.add('pressed');
+        if (glow) glow.style.opacity = '0.8'; if (glint1) glint1.style.opacity = '0.5'; if (glint2) glint2.style.opacity = '0.4';
+        setTimeout(() => { drop.classList.remove('pressed'); if (glow) glow.style.opacity = '0.25'; if (glint1) glint1.style.opacity = '0.15'; if (glint2) glint2.style.opacity = '0.1'; }, 120);
+      });
+    });
+
+    document.querySelectorAll('.submenu-item').forEach(item => item.addEventListener('click', e => e.preventDefault()));
+  })();
+</script>
+</body>
+</html>

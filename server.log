@@ -1,0 +1,63 @@
+127.0.0.1 - - [04/May/2026 19:13:41] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:13:41] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:13:41] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:13:41] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:13:41] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:13:41] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:13:41] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:23:01] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:23:01] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:23:01] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:23:01] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:23:01] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:23:01] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:23:01] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:25:17] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:25:17] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:25:17] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:25:17] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:25:17] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:25:17] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:25:17] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:27:27] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:27:27] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:27:27] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:27:27] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:27:27] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:27:27] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:27:27] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:29:25] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:29:25] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:29:25] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:29:25] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:29:25] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:29:25] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:29:25] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:30:24] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:30:24] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:30:24] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:30:24] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:30:24] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:30:24] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:30:24] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:31:37] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:31:37] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:31:37] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:31:37] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:31:37] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:31:37] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:31:37] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:32:44] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:32:44] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:32:44] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:32:44] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:32:44] "GET /homepage3.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:32:44] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:32:44] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:34:13] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [04/May/2026 19:34:14] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:34:14] "GET /homepage.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:34:14] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:34:14] "GET /homepage2.jpg HTTP/1.1" 404 -
+127.0.0.1 - - [04/May/2026 19:34:14] code 404, message File not found
+127.0.0.1 - - [04/May/2026 19:34:14] "GET /homepage3.jpg HTTP/1.1" 404 -
